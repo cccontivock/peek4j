@@ -1,0 +1,6 @@
+.DS_Store/
+.extract/
+bin/
+bin_test/
+generated/
+**/webgoat*.jar

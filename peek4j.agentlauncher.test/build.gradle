@@ -1,0 +1,23 @@
+task getWebGoatContainerExecJarFile() {
+	description "Downloads and caches an executable WebGoat JAR file."
+	String wgFileName = bnd('webGoatContainerExecJarFileName')
+	doFirst {
+		File wgFile = file(wgFileName)
+		String wgSourceUrl = bnd('webGoatContainerExecJarSourceUrl')
+		logger.info("Downloading ${wgSourceUrl} to ${wgFile}.")
+		wgFile.delete()
+		wgFile.createNewFile()
+		wgFile.withOutputStream { out ->
+			new URL(wgSourceUrl).withInputStream { from -> out << from; }
+		}
+	}
+	outputs.upToDateWhen {
+		if (wgFileName.isEmpty()) {
+			return false
+		}
+		File wgFile = file(wgFileName)
+		return wgFile.isFile() && wgFile.canRead()
+	}
+}
+
+testOSGi.dependsOn(getWebGoatContainerExecJarFile)

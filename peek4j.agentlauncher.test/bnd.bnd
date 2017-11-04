@@ -1,0 +1,48 @@
+#
+#  OSGi TEST BUNDLE
+#
+
+Bundle-Version:1.0.0.${tstamp}
+Bundle-Description: The test bundle for the launcher for the Peek4J Agent.
+Export-Package: peek4j.agentlauncher.test
+Test-Cases: ${test-cases}
+
+# Per https://github.com/WebGoat/WebGoat/wiki/Running-WebGoat
+webGoatContainerExecJarSourceUrl: https://github.com/WebGoat/WebGoat/releases/download/7.1/webgoat-container-7.1-exec.jar
+webGoatContainerExecJarFileName: test-resources/webgoat-container-7.1-exec.jar
+
+-includeresource: \
+	{readme.md}
+
+-buildpath: \
+	org.apache.commons.lang3;version=3.4.0,\
+	osgi.enroute.base.api;version=2.1,\
+	osgi.enroute.junit.wrapper;version=4.12,\
+	osgi.enroute.hamcrest.wrapper;version=1.3,\
+	peek4j.agentlauncher;version=latest
+
+-runrequires: \
+	osgi.identity;filter:='(osgi.identity=org.apache.commons.lang3)',\
+	osgi.identity;filter:='(osgi.identity=peek4j.agentlauncher.test)',\
+	osgi.identity;filter:='(osgi.identity=peek4j.agentlauncher)'
+
+-runbundles: \
+	org.apache.felix.log;version='[1.0.1,1.0.2)',\
+	osgi.enroute.hamcrest.wrapper;version='[1.3.0,1.3.1)',\
+	osgi.enroute.junit.wrapper;version='[4.12.0,4.12.1)',\
+	peek4j.agentlauncher;version=snapshot,\
+	peek4j.agentlauncher.test;version=snapshot,\
+	org.apache.commons.lang3;version='[3.4.0,3.4.1)',\
+	log4j;version='[1.2.17,1.2.18)',\
+	slf4j.api;version='[1.7.25,1.7.26)',\
+	slf4j.log4j12;version='[1.7.25,1.7.26)'
+
+-runsystempackages: \
+	org.apache.commons.lang3;version=3.4.0
+
+-runpath: \
+	org.apache.commons.lang3;version='[3.4.0,3.4.1)'
+
+-runproperties: \
+	log4j.configuration=${fileuri;test-resources/log4j.properties}, \
+	webGoatContainerExecJarUri=${fileuri;${webGoatContainerExecJarFileName}}

@@ -1,0 +1,17 @@
+#
+#  RUN SPECIFICATION
+#
+
+
+Bundle-Version:				1.0.0.${tstamp}
+Bundle-SymbolicName:		peek4j.agentlauncher.launch
+JPM-Command:				peek4j-agentlauncher
+
+
+-runfw:						org.eclipse.osgi
+
+-runrequires:  \
+	osgi.identity;filter:='(osgi.identity=peek4j.agentlauncher)'
+
+-runbundles: \
+	${error;Resolve first}
