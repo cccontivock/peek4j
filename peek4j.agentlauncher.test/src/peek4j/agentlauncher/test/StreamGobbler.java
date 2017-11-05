@@ -20,17 +20,28 @@ import org.slf4j.Logger;
 public final class StreamGobbler extends Thread {
 	private final Logger logger;
 	private final InputStream is;
-	private final String type;
+	private final String tag;
 	private final Optional<OutputStream> redirect;
 
 	public StreamGobbler(Logger logger, InputStream is, String type) {
 		this(logger, is, type, null);
 	}
 
-	public StreamGobbler(Logger logger, InputStream is, String type, OutputStream redirect) {
+	/**
+	 * @param logger
+	 *            to which to log messages
+	 * @param is
+	 *            from which to read lines
+	 * @param tag
+	 *            to prepend to each read line when printed to the logger
+	 * @param redirect
+	 *            to which to print lines, unmodified, and on which to call
+	 *            {@link #notifyAll()} safely after printing each line
+	 */
+	public StreamGobbler(Logger logger, InputStream is, String tag, OutputStream redirect) {
 		this.logger = logger;
 		this.is = is;
-		this.type = type;
+		this.tag = tag;
 		this.redirect = Optional.ofNullable(redirect);
 	}
 
@@ -47,8 +58,13 @@ public final class StreamGobbler extends Thread {
 					pwTmp.println(lineTmp);
 					pwTmp.flush();
 				});
+				redirect.ifPresent(os -> {
+					synchronized (os) {
+						os.notifyAll();
+					}
+				});
 				if (logger.isTraceEnabled()) {
-					logger.trace("{}>{}", type, lineTmp);
+					logger.trace("{}>{}", tag, lineTmp);
 				}
 			}
 			pw.ifPresent(pwTmp -> pwTmp.flush());
@@ -56,7 +72,7 @@ public final class StreamGobbler extends Thread {
 			logger.error("Error reading/writing stream.", ex);
 		} finally {
 			if (logger.isTraceEnabled()) {
-				logger.trace("{} for type {} exiting.", getClass(), type);
+				logger.trace("{} for type {} exiting.", getClass(), tag);
 			}
 		}
 	}
