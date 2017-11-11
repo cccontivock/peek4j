@@ -1,0 +1,15 @@
+#
+#  peek4j.agent.application APPLICATION
+#
+
+Bundle-Version: 1.0.0.${tstamp}
+Bundle-Description: 	The Peek4J Agent Application.
+
+Export-Package: \
+	peek4j.agent.application
+
+-buildpath: \
+	osgi.enroute.base.api;version=2.1,\
+	peek4j.agent.api;version=snapshot,\
+	peek4j.trace.api;version=latest,\
+	peek4j.tracedatabase.api;version=latest

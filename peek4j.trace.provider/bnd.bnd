@@ -1,0 +1,24 @@
+#
+# peek4j.trace.provider PROVIDER BUNDLE
+#
+
+Bundle-Version:					1.0.0.${tstamp}
+Bundle-Description: Provides an implementation of peek4j.trace.api.
+
+Import-Package: !peek4j.trace.api, *
+
+Export-Package:  \
+	peek4j.trace.api;provide:=true
+
+Private-Package:  \
+	peek4j.trace.provider
+
+-includeresource: {readme.md}
+
+-buildpath: \
+	osgi.enroute.base.api;version=2.1,\
+	peek4j.trace.api;version=latest
+
+-testpath: \
+	osgi.enroute.junit.wrapper;version=4.12, \
+	osgi.enroute.hamcrest.wrapper;version=1.3

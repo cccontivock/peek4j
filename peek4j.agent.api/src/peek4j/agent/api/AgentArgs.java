@@ -2,6 +2,9 @@ package peek4j.agent.api;
 
 import java.util.SortedMap;
 
+/**
+ * A map of arguments to be used by the Peek4J Agent.
+ */
 public interface AgentArgs extends SortedMap<String, String> {
 
 	/**

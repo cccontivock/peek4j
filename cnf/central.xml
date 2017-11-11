@@ -6,12 +6,19 @@
 	<artifactId>central</artifactId>
 	<version>0.0.0</version>
 	<packaging>pom</packaging>
-	
+
 	<properties>
+		<version.bnd>3.5.0</version.bnd>
+		<version.jackson>2.9.2</version.jackson>
 		<version.slf4j>1.7.25</version.slf4j>
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>biz.aQute.bnd</groupId>
+			<artifactId>biz.aQute.bndlib</artifactId>
+			<version>${version.bnd}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.apache.felix</groupId>
 			<artifactId>org.apache.felix.gogo.shell</artifactId>
@@ -26,6 +33,16 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
 			<version>${version.slf4j}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>${version.jackson}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${version.jackson}</version>
 		</dependency>
 	</dependencies>
 </project>

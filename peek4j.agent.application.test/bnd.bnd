@@ -1,0 +1,81 @@
+#
+#  OSGi TEST BUNDLE
+#
+
+Bundle-Version:1.0.0.${tstamp}
+Bundle-Description: The test bundle for the launcher for the Peek4J Agent.
+Export-Package: peek4j.agent.application.test
+Test-Cases: ${test-cases}
+
+# Per https://github.com/WebGoat/WebGoat/wiki/Running-WebGoat
+webGoatContainerExecJarSourceUrl: https://github.com/WebGoat/WebGoat/releases/download/7.1/webgoat-container-7.1-exec.jar
+webGoatContainerExecJarFileName: test-resources/webgoat-container-7.1-exec.jar
+
+-includeresource: \
+	{readme.md}
+
+-buildpath: \
+	org.apache.commons.lang3;version=3.4.0,\
+	osgi.enroute.base.api;version=2.1,\
+	osgi.enroute.junit.wrapper;version=4.12,\
+	osgi.enroute.hamcrest.wrapper;version=1.3,\
+	peek4j.agent.api;version=latest,\
+	peek4j.agent.application;version=latest,\
+	peek4j.agent.launcher;version=latest,\
+	peek4j.agent.launcher.framework;version=latest,\
+	peek4j.trace.api;version=latest,\
+	peek4j.trace.provider;version=latest,\
+	peek4j.tracedatabase.api;version=latest,\
+	peek4j.tracedatabase.provider;version=latest
+
+-runrequires: \
+	osgi.identity;filter:='(osgi.identity=org.apache.commons.lang3)',\
+	osgi.identity;filter:='(osgi.identity=osgi.enroute.rest.simple.provider)',\
+	osgi.identity;filter:='(osgi.identity=peek4j.trace.provider)',\
+	osgi.identity;filter:='(osgi.identity=peek4j.tracedatabase.provider)',\
+	osgi.identity;filter:='(osgi.identity=peek4j.agent.application.test)',\
+	osgi.identity;filter:='(osgi.identity=peek4j.agent.application)'
+
+-runbundles: \
+	org.apache.commons.lang3;version='[3.4.0,3.4.1)',\
+	org.apache.felix.log;version='[1.0.1,1.0.2)',\
+	osgi.enroute.hamcrest.wrapper;version='[1.3.0,1.3.1)',\
+	osgi.enroute.junit.wrapper;version='[4.12.0,4.12.1)',\
+	com.fasterxml.jackson.core.jackson-annotations,\
+	com.fasterxml.jackson.core.jackson-core,\
+	com.fasterxml.jackson.core.jackson-databind,\
+	peek4j.agent.api;version=snapshot,\
+	peek4j.agent.application;version=snapshot,\
+	peek4j.agent.application.test;version=snapshot,\
+	peek4j.agent.launcher;version=snapshot,\
+	peek4j.agent.launcher.framework;version=snapshot,\
+	peek4j.trace.provider;version=snapshot,\
+	peek4j.tracedatabase.provider;version=snapshot,\
+	log4j;version='[1.2.17,1.2.18)',\
+	slf4j.api;version='[1.7.25,1.7.26)',\
+	slf4j.log4j12;version='[1.6.1,1.7.0)',\
+	org.apache.felix.configadmin;version='[1.8.8,1.8.9)',\
+	org.apache.felix.http.jetty;version='[3.2.0,3.2.1)',\
+	org.apache.felix.http.servlet-api;version='[1.1.2,1.1.3)',\
+	org.apache.felix.scr;version='[2.0.2,2.0.3)',\
+	org.eclipse.equinox.coordinator;version='[1.3.100,1.3.101)',\
+	org.eclipse.equinox.event;version='[1.3.100,1.3.101)',\
+	org.eclipse.equinox.metatype;version='[1.4.100,1.4.101)',\
+	org.osgi.service.event;version='[1.3.1,1.3.2)',\
+	org.osgi.service.metatype;version='[1.3.0,1.3.1)',\
+	osgi.enroute.configurer.simple.provider;version='[2.1.0,2.1.1)',\
+	osgi.enroute.dtos.bndlib.provider;version='[2.1.0,2.1.1)',\
+	osgi.enroute.rest.simple.provider;version='[2.1.0,2.1.1)'
+
+-runsystempackages: \
+	aQute.launcher;version=3.5.0,\
+	org.apache.commons.lang3;version=3.4.0
+
+-runpath: \
+	biz.aQute.launcher;export="aQute.launcher;version=3.5.0",\
+	org.apache.commons.lang3;version='[3.4.0,3.4.1)'
+
+-runproperties: \
+	log4j.configuration=${fileuri;test-resources/log4j.properties}, \
+	webGoatContainerExecJarUri=${fileuri;${webGoatContainerExecJarFileName}},\
+	peek4jAgentLauncherExportedJarUri=${fileuri;../peek4j.agent.launcher/generated/distributions/executable/peek4j.agent.launcher.jar}

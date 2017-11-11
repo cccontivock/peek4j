@@ -1,0 +1,22 @@
+#
+# peek4j.agent.launcher.framework PROVIDER BUNDLE
+#
+
+Bundle-Version: 1.0.0.${tstamp}
+Bundle-Description: The Peek4J Agent Framework Launcher
+
+Export-Package:  \
+	peek4j.agent.launcher.framework
+
+-includeresource: \
+	{readme.md},\
+	{log4j.properties}
+
+-buildpath:  \
+	osgi.enroute.base.api;version=2.1,\
+	biz.aQute.bndlib,\
+	biz.aQute.launcher,\
+	com.fasterxml.jackson.core.jackson-annotations,\
+	com.fasterxml.jackson.core.jackson-core,\
+	com.fasterxml.jackson.core.jackson-databind,\
+	peek4j.agent.api

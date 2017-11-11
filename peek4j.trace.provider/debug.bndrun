@@ -1,0 +1,13 @@
+#
+# peek4j.trace.provider DEBUG LAUNCH SPECFICATION 
+#
+
+-include: ~peek4j.trace.provider.bndrun
+
+-runrequires.debug:  \
+	${debug-bundles}
+
+-runtrace: true
+
+-runbundles: \
+	${error;Resolve first}

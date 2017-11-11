@@ -1,0 +1,55 @@
+#
+#  RUN SPECIFICATION
+#
+
+Bundle-Version: 1.0.0.${tstamp}
+Bundle-SymbolicName:	 peek4j.agent.launcher
+
+# Java Agent specification.
+agentClass: peek4j.agent.launcher.AgentLauncher
+Agent-Class: ${agentClass}
+Premain-Class: ${agentClass}
+Can-Redefine-Classes: true
+Can-Retransform-Classes: true
+
+# See http://bnd.bndtools.org/chapters/300-launching.html
+Launcher-Plugin: ${agentClass}
+
+-runfw: org.eclipse.osgi
+
+# These JAR files support the AgentLauncher bootstrapping an OSGi framework.
+-runpath: \
+	biz.aQute.bndlib,\
+	biz.aQute.launcher;export="aQute.launcher",\
+	com.fasterxml.jackson.core.jackson-annotations,\
+	com.fasterxml.jackson.core.jackson-core,\
+	com.fasterxml.jackson.core.jackson-databind,\
+	peek4j.agent.api,\
+	peek4j.agent.launcher.framework
+
+# These are the bundles for the Peek4J Agent Application.
+-runrequires: \
+	osgi.identity;filter:='(osgi.identity=peek4j.agent.application)',\
+	osgi.identity;filter:='(osgi.identity=peek4j.trace.provider)',\
+	osgi.identity;filter:='(osgi.identity=peek4j.tracedatabase.provider)'
+
+-runbundles: \
+	log4j;version='[1.2.17,1.2.18)',\
+	org.apache.felix.configadmin;version='[1.8.8,1.8.9)',\
+	org.apache.felix.http.jetty;version='[3.2.0,3.2.1)',\
+	org.apache.felix.http.servlet-api;version='[1.1.2,1.1.3)',\
+	org.apache.felix.log;version='[1.0.1,1.0.2)',\
+	org.apache.felix.scr;version='[2.0.2,2.0.3)',\
+	org.eclipse.equinox.coordinator;version='[1.3.100,1.3.101)',\
+	org.eclipse.equinox.event;version='[1.3.100,1.3.101)',\
+	org.eclipse.equinox.metatype;version='[1.4.100,1.4.101)',\
+	org.osgi.service.event;version='[1.3.1,1.3.2)',\
+	org.osgi.service.metatype;version='[1.3.0,1.3.1)',\
+	osgi.enroute.configurer.simple.provider;version='[2.1.0,2.1.1)',\
+	osgi.enroute.dtos.bndlib.provider;version='[2.1.0,2.1.1)',\
+	osgi.enroute.rest.simple.provider;version='[2.1.0,2.1.1)',\
+	peek4j.agent.application;version=snapshot,\
+	peek4j.trace.provider;version=snapshot,\
+	peek4j.tracedatabase.provider;version=snapshot,\
+	slf4j.api;version='[1.7.25,1.7.26)',\
+	slf4j.log4j12;version='[1.7.25,1.7.26)'

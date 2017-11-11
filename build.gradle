@@ -1,4 +1,51 @@
-// Available to customize the build
 plugins {
 	id "eclipse"
+}
+
+repositories {
+	mavenCentral()
+}
+
+defaultTasks 'build'
+
+ext {
+	reportsCfg = {
+		html.enabled = true
+		xml.enabled = false
+	}
+}
+
+subprojects { subproject ->
+	repositories {
+		mavenCentral()
+	}
+
+	if (!plugins.withType(JavaBasePlugin).isEmpty()) {
+		plugins.apply("pmd")
+		plugins.apply("findbugs")
+		tasks.withType(Pmd) { pmdTask ->
+			reports(reportsCfg)
+			build.dependsOn(pmdTask)
+		}
+		tasks.withType(FindBugs) { findbugsTask ->
+			reports(reportsCfg)
+		}
+	}
+	
+	if (subproject.name.equals("peek4j.agent.launcher")) {
+		subproject.tasks["export.peek4j.agent.launcher"].doLast { exportTask ->
+			exec {
+				def execJarFile = "${exportTask.destinationDir}/${subproject.name}.jar"
+				def cmdLine = ["jar", "uf", execJarFile]
+				def subprojectBinDir = subproject.file("bin/")
+				def filesToAdd = new FileNameFinder().getFileNames(subprojectBinDir.absolutePath, "**/launcher/*.class")
+				filesToAdd.each { classFileName ->
+					cmdLine << classFileName - (subprojectBinDir.absolutePath + "/")
+				}
+				logger.info("Updating JAR file using command line: ${cmdLine}")
+				workingDir subprojectBinDir
+				commandLine cmdLine
+			}
+		}
+	}
 }

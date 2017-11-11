@@ -1,0 +1,12 @@
+#
+# peek4j.agent.application APPLICATION DEBUG RUN SPECIFICATION
+#
+
+-include: ~peek4j.agent.application.bndrun
+
+-runrequires.debug:  ${debug-bundles}
+
+-runtrace: true
+
+-runbundles: \
+	${error;Resolve first}

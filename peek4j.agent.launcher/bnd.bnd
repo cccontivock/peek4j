@@ -1,0 +1,15 @@
+#
+#  peek4j.agent.launcher APPLICATION
+#
+
+Bundle-Version: 1.0.0.${tstamp}
+Bundle-Description: The Peek4J Agent Launcher
+
+Export-Package:  \
+	peek4j.agent.launcher
+
+-includeresource: \
+	{readme.md}
+
+-buildpath: \
+	peek4j.agent.launcher.framework
