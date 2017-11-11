@@ -94,9 +94,6 @@ public final class AgentFrameworkLauncher {
 			if (httpPortStrOrig != null) {
 				System.setProperty(SYS_PROP_KEY__OSGI_ENROUTE_HTTP_PORT, httpPortStrOrig);
 			}
-//			if (log4jCfgUrlStrOrig != null) {
-//				System.setProperty(SYS_PROP_KEY__LOG4J_CONFIGURATION, log4jCfgUrlStrOrig);
-//			}
 		}
 	}
 

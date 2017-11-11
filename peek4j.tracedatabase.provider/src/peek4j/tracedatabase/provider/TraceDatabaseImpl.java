@@ -16,7 +16,7 @@ import peek4j.trace.api.Trace;
 import peek4j.tracedatabase.api.TraceDatabase;
 
 @Designate(ocd = TraceDatabaseImpl.Config.class, factory = true)
-@Component(name = "peek4j.tracedatabase.provider")
+@Component(name = "peek4j.tracedatabase.provider", immediate = true)
 public class TraceDatabaseImpl implements TraceDatabase {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(TraceDatabaseImpl.class);

@@ -19,7 +19,7 @@ import peek4j.tracedatabase.api.TraceDatabase;
 //@RequireBootstrapWebResource(resource = "css/bootstrap.css")
 //@RequireWebServerExtender
 @RequireConfigurerExtender
-@Component(name = "peek4j.agent.application")
+@Component(name = "peek4j.agent.application", immediate = true)
 public class AgentApplication implements REST {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(AgentApplication.class);
