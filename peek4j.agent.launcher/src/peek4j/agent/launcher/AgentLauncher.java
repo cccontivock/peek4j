@@ -36,14 +36,14 @@ public final class AgentLauncher {
 	}
 
 	public static void agentmain(String agentArgs, Instrumentation instrumentation) throws Throwable {
-		System.out.println("Starting Peek4J Agent.");
+		log("Starting Peek4J Agent.");
 		final ClassLoader cl = AgentLauncher.class.getClassLoader();
 		final Enumeration<URL> manifests = cl.getResources("META-INF/MANIFEST.MF");
 		while (manifests.hasMoreElements()) {
 
 			final Manifest m = new Manifest(manifests.nextElement().openStream());
 			final String runpath = m.getMainAttributes().getValue(EMBEDDED_RUNPATH);
-			System.out.println("Found embedded runpath: " + runpath);
+			log("Found embedded runpath: " + runpath);
 			if (runpath == null || runpath.isEmpty()) {
 				continue;
 			}
@@ -52,27 +52,41 @@ public final class AgentLauncher {
 			for (final String path : runpath.split("\\s*,\\s*")) {
 				final URL embeddedRunPathJarUrl = cl.getResource(path);
 				final URL url = toFileURL(embeddedRunPathJarUrl);
-				System.out.println("Adding " + embeddedRunPathJarUrl + " to classpath as " + url);
+				log("Adding " + embeddedRunPathJarUrl + " to classpath as " + url);
 				classpath.add(url);
 			}
 
 			AccessController.doPrivileged((PrivilegedAction<Throwable>) () -> {
 				try (final URLClassLoader urlc = new URLClassLoader(classpath.toArray(new URL[0]))) {
-					System.out.println("Getting framework-launcher class.");
+					log("Getting framework-launcher class.");
 					final Class<?> embeddedLauncher = urlc
 							.loadClass("peek4j.agent.launcher.framework.AgentFrameworkLauncher");
-					System.out.println("Getting framework-launcher method.");
+					log("Getting framework-launcher method.");
 					final Method method = embeddedLauncher.getMethod("launchAgentFramework",
 							new Class<?>[] { String.class, Instrumentation.class });
-					System.out.println("Invoking framework-launcher method.");
+					log("Invoking framework-launcher method.");
 					method.invoke(null, new Object[] { agentArgs, instrumentation });
 					return null;
 				} catch (final Exception ex) {
 					throw new RuntimeException("Failed to launch Peek4J Agent OSGi framework.", ex);
 				}
 			});
-			System.out.println("Started Peek4J Agent.");
+			log("Started Peek4J Agent.");
 		}
+	}
+
+	/**
+	 * TODO: Replace usage of this method with logging framework calls, once those
+	 * can be invoked without impeding the target application.
+	 *
+	 * NOTE: Not using {@link peek4j.agent.api.Log} here because this needs no
+	 * dependencies.
+	 *
+	 * @param message
+	 */
+	@SuppressWarnings("javadoc")
+	private static void log(String message) {
+		System.out.println(AgentLauncher.class.getName() + ": " + message);
 	}
 
 	private static URL toFileURL(URL resource) throws IOException {
